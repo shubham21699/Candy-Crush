@@ -5,6 +5,7 @@
 }
 
 .board {
+  background-color: white;
   width: 560px;
   height: 560px;
   display: flex;
