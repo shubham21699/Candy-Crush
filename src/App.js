@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import './App.css'; 
+import blankSpace from './images/blank.png';
+import blueCandy from './images/blue-candy.png';
+import greenCandy from './images/green-candy.png';
+import orangeCandy from './images/orange-candy.png';
+import purpleCandy from './images/purple-candy.png';
+import redCandy from './images/red-candy.png';
+import yellowCandy from './images/yellow-candy.png';
+
 
 const board_width = 8;
 const candy_colors = [
-  'blue',
-  'green',
-  'orange',
-  'purple',
-  'red',
-  'yellow'
+  blueCandy,
+  greenCandy,
+  orangeCandy,
+  purpleCandy,
+  redCandy,
+  yellowCandy
 ];
 
 function App() {
@@ -29,7 +37,7 @@ function App() {
 
       // If all the three elements in the column are of same candy color
       if(columnOfThree.every(square => currentCandyArrangement[square] === decidedColor)) {
-        columnOfThree.forEach(square => currentCandyArrangement[square] = '');
+        columnOfThree.forEach(square => currentCandyArrangement[square] = blankSpace);
         return true;
       }
 
@@ -48,7 +56,7 @@ function App() {
 
       // If all the three elements in the column are of same candy color. 
       if(columnOfFour.every(square => currentCandyArrangement[square] === decidedColor)) {
-        columnOfFour.forEach(square => currentCandyArrangement[square] = '');
+        columnOfFour.forEach(square => currentCandyArrangement[square] = blankSpace);
         return true;
       }
 
@@ -70,7 +78,7 @@ function App() {
 
       // If all the three elements in therow are of same candy color.
       if(rowOfThree.every(square => currentCandyArrangement[square] === decidedColor)) {
-        rowOfThree.forEach(square => currentCandyArrangement[square] = '');
+        rowOfThree.forEach(square => currentCandyArrangement[square] = blankSpace);
         return true;
       }
 
@@ -92,7 +100,7 @@ function App() {
 
       // If all the three elements in the row are of same candy color.
       if(rowOfFour.every(square => currentCandyArrangement[square] === decidedColor)) {
-        rowOfFour.forEach(square => currentCandyArrangement[square] = '');
+        rowOfFour.forEach(square => currentCandyArrangement[square] = blankSpace);
         return true;
       }
 
@@ -106,15 +114,15 @@ function App() {
       const first_row = [0, 1, 2, 3, 4, 5, 6, 7];
       const is_first_row = first_row.includes(i);
 
-      if(is_first_row && currentCandyArrangement[i] === '') {
+      if(is_first_row && currentCandyArrangement[i] === blankSpace) {
         let random_candy = Math.floor(Math.random() * candy_colors.length);
         currentCandyArrangement[i] = candy_colors[random_candy];
       }
 
       // If the below of one we are looping for is blank, then we move it down.
-      if(currentCandyArrangement[i + board_width] === '') {
+      if(currentCandyArrangement[i + board_width] === blankSpace) {
         currentCandyArrangement[i+board_width] = currentCandyArrangement[i];
-        currentCandyArrangement[i] = '';
+        currentCandyArrangement[i] = blankSpace;
       }
 
     }
@@ -140,8 +148,8 @@ function App() {
     const squareBeingDraggedId = parseInt(squareBeingDragged.getAttribute('data_id'));
     const squareBeingReplacedId = parseInt(squareBeingReplaced.getAttribute('data_id'));
 
-    currentCandyArrangement[squareBeingReplacedId] = squareBeingDragged.style.backgroundColor;
-    currentCandyArrangement[squareBeingDraggedId] = squareBeingReplaced.style.backgroundColor;
+    currentCandyArrangement[squareBeingReplacedId] = squareBeingDragged.getAttribute('src');
+    currentCandyArrangement[squareBeingDraggedId] = squareBeingReplaced.getAttribute('src');
 
     console.log('sqaureBeingDraggedId: ', squareBeingDraggedId);
     console.log('squareBeingReplacedId: ', squareBeingReplacedId);
@@ -168,8 +176,8 @@ function App() {
         setSquareBeingDragged(null);
       }
       else {
-        currentCandyArrangement[squareBeingReplacedId] = squareBeingReplaced.style.backgroundColor;
-        currentCandyArrangement[squareBeingDraggedId] = squareBeingDragged.style.backgroundColor;
+        currentCandyArrangement[squareBeingReplacedId] = squareBeingReplaced.getAttribute('src');
+        currentCandyArrangement[squareBeingDraggedId] = squareBeingDragged.getAttribute('src');
         setCurrentCandyArrangement([...currentCandyArrangement]);
       }
 
@@ -219,7 +227,7 @@ function App() {
         {currentCandyArrangement.map((candyColor, index) => (
           <img 
             key={index}
-            style={{ backgroundColor: candyColor}}
+            src={candyColor}
             alt={candyColor}
             data_id={index}
             draggable={true}
