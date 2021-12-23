@@ -14,9 +14,11 @@ const candy_colors = [
 function App() {
 
   const [currentCandyArrangement, setCurrentCandyArrangement] = useState([]);
+  const [squareBeingDragged, setSquareBeingDragged] = useState(null)
+  const [squareBeingReplaced, setSquareBeingReplaced] = useState(null);
 
   const checkForColumnOfThree = () => {
-    for(let i=0 ; i<47 ; i++) { // It will loop till 48th block to check for the column of size 3 in vertical direction.
+    for(let i=0 ; i<=47 ; i++) { // It will loop till 48th block to check for the column of size 3 in vertical direction.
       
       // Here, for example: 0, 8, 16 are the three indexes which form a column of size three at 0th index
       // and it will now check for that column whether it will satisfy the condition.
@@ -28,13 +30,14 @@ function App() {
       // If all the three elements in the column are of same candy color
       if(columnOfThree.every(square => currentCandyArrangement[square] === decidedColor)) {
         columnOfThree.forEach(square => currentCandyArrangement[square] = '');
+        return true;
       }
 
     }
   }
 
   const checkForColumnOfFour = () => {
-    for(let i=0 ; i<39 ; i++) { // It will loop till 40th block to check for the column of size 4 in vertical direction.
+    for(let i=0 ; i<=39 ; i++) { // It will loop till 40th block to check for the column of size 4 in vertical direction.
       
       // Here, for example: 0, 8, 16 are the three indexes which form a column of size four at 0th index
       // and it will now check for that column whether it will satisfy the condition.
@@ -46,6 +49,7 @@ function App() {
       // If all the three elements in the column are of same candy color. 
       if(columnOfFour.every(square => currentCandyArrangement[square] === decidedColor)) {
         columnOfFour.forEach(square => currentCandyArrangement[square] = '');
+        return true;
       }
 
     }
@@ -67,6 +71,7 @@ function App() {
       // If all the three elements in therow are of same candy color.
       if(rowOfThree.every(square => currentCandyArrangement[square] === decidedColor)) {
         rowOfThree.forEach(square => currentCandyArrangement[square] = '');
+        return true;
       }
 
     }
@@ -88,6 +93,7 @@ function App() {
       // If all the three elements in the row are of same candy color.
       if(rowOfFour.every(square => currentCandyArrangement[square] === decidedColor)) {
         rowOfFour.forEach(square => currentCandyArrangement[square] = '');
+        return true;
       }
 
     }
@@ -95,7 +101,7 @@ function App() {
 
   const moveIntoSquareBelow = () => {
 
-    for(let i=0 ; i<64-board_width ; i++) {
+    for(let i=0 ; i<=55 ; i++) {
 
       const first_row = [0, 1, 2, 3, 4, 5, 6, 7];
       const is_first_row = first_row.includes(i);
@@ -115,6 +121,60 @@ function App() {
 
   } 
 
+  const dragStart = (e) => {
+    console.log(e.target);
+    console.log('Drag Start');
+    setSquareBeingDragged(e.target);
+  }
+
+  const dragDrop = (e) => {
+    console.log(e.target);
+    console.log('Drag Drop');
+    setSquareBeingReplaced(e.target);
+  }
+
+  const dragEnd = (e) => {
+    // console.log(e.target);
+    console.log('Drag End');
+
+    const squareBeingDraggedId = parseInt(squareBeingDragged.getAttribute('data_id'));
+    const squareBeingReplacedId = parseInt(squareBeingReplaced.getAttribute('data_id'));
+
+    currentCandyArrangement[squareBeingReplacedId] = squareBeingDragged.style.backgroundColor;
+    currentCandyArrangement[squareBeingDraggedId] = squareBeingReplaced.style.backgroundColor;
+
+    console.log('sqaureBeingDraggedId: ', squareBeingDraggedId);
+    console.log('squareBeingReplacedId: ', squareBeingReplacedId);
+
+    // Check if moving 1 position up, down, left or right can form a valid match,
+    // only then make it mode otherwise it will remain in its position.
+    const validMoves = [
+      squareBeingDraggedId - 1,
+      squareBeingDraggedId - board_width,
+      squareBeingDraggedId + 1,
+      squareBeingDraggedId + board_width
+    ];
+
+    const validMove = validMoves.includes(squareBeingReplacedId);
+
+    const isColumnOfFour = checkForColumnOfFour();
+    const isRowOfFour = checkForRowOfFour();
+    const isColumnOfThree = checkForColumnOfThree();
+    const isRowOfThree = checkForRowOfThree();
+
+    if(squareBeingReplacedId && validMove && 
+      (isColumnOfFour || isRowOfFour || isColumnOfThree || isRowOfThree)) {
+        setSquareBeingReplaced(null);
+        setSquareBeingDragged(null);
+      }
+      else {
+        currentCandyArrangement[squareBeingReplacedId] = squareBeingReplaced.style.backgroundColor;
+        currentCandyArrangement[squareBeingDraggedId] = squareBeingDragged.style.backgroundColor;
+        setCurrentCandyArrangement([...currentCandyArrangement]);
+      }
+
+  }
+
 
   // board width is 8 so its height is also 8 so we need to create a board of 8x8 = 64 sqaures in which
   // random candies to be appeared.
@@ -130,7 +190,7 @@ function App() {
     // console.log(randomCandyArrangement); 
   }
 
-  console.log(currentCandyArrangement);
+  // console.log(currentCandyArrangement);
 
   useEffect(() => {
     createBoard();
@@ -161,6 +221,14 @@ function App() {
             key={index}
             style={{ backgroundColor: candyColor}}
             alt={candyColor}
+            data_id={index}
+            draggable={true}
+            onDragStart={dragStart}
+            onDragOver={(e) => e.preventDefault()}
+            onDragEnter={(e) => e.preventDefault()}
+            onDragLeave={(e) => e.preventDefault()}
+            onDrop={dragDrop}
+            onDragEnd={dragEnd}
           />
         ))}
       </div>
