@@ -2,8 +2,8 @@ import React from 'react';
 
 const ScoreBoard = ({ score }) => {
     return (
-        <div className='score_board' style={{backgoundColor: 'red'}}>
-            <h2>Score: {score}</h2>
+        <div className='score_board'>
+            <h1>Score: {score}</h1>
         </div>
     )
 }
