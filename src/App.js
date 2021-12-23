@@ -93,7 +93,27 @@ function App() {
     }
   }
 
+  const moveIntoSquareBelow = () => {
 
+    for(let i=0 ; i<64-board_width ; i++) {
+
+      const first_row = [0, 1, 2, 3, 4, 5, 6, 7];
+      const is_first_row = first_row.includes(i);
+
+      if(is_first_row && currentCandyArrangement[i] === '') {
+        let random_candy = Math.floor(Math.random() * candy_colors.length);
+        currentCandyArrangement[i] = candy_colors[random_candy];
+      }
+
+      // If the below of one we are looping for is blank, then we move it down.
+      if(currentCandyArrangement[i + board_width] === '') {
+        currentCandyArrangement[i+board_width] = currentCandyArrangement[i];
+        currentCandyArrangement[i] = '';
+      }
+
+    }
+
+  } 
 
 
   // board width is 8 so its height is also 8 so we need to create a board of 8x8 = 64 sqaures in which
@@ -124,12 +144,13 @@ function App() {
       checkForColumnOfThree();
       checkForRowOfThree();
       checkForColumnOfFour();
+      moveIntoSquareBelow();
       setCurrentCandyArrangement([...currentCandyArrangement]);
 
     }, 100); // It will run after every 100 millisecond.
     return () => clearInterval(timer);
 
-  }, [checkForColumnOfFour, checkForColumnOfThree, checkForRowOfFour, checkForRowOfThree, currentCandyArrangement]);
+  }, [checkForColumnOfFour, checkForColumnOfThree, checkForRowOfFour, checkForRowOfThree, moveIntoSquareBelow, currentCandyArrangement]);
 
 
   return (
