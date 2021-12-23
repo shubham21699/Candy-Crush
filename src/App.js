@@ -7,6 +7,7 @@ import orangeCandy from './images/orange-candy.png';
 import purpleCandy from './images/purple-candy.png';
 import redCandy from './images/red-candy.png';
 import yellowCandy from './images/yellow-candy.png';
+import ScoreBoard from './ScoreBoard';
 
 
 const board_width = 8;
@@ -24,6 +25,7 @@ function App() {
   const [currentCandyArrangement, setCurrentCandyArrangement] = useState([]);
   const [squareBeingDragged, setSquareBeingDragged] = useState(null)
   const [squareBeingReplaced, setSquareBeingReplaced] = useState(null);
+  const [scoreDisplay, setScoreDisplay] = useState(0);
 
   const checkForColumnOfThree = () => {
     for(let i=0 ; i<=47 ; i++) { // It will loop till 48th block to check for the column of size 3 in vertical direction.
@@ -35,8 +37,12 @@ function App() {
       // It will check the column for the color present at ith index whether all three boxes are of same candy or not.
       const decidedColor = currentCandyArrangement[i];
 
+      // check if blank space appears after a march
+      const isBlank = currentCandyArrangement[i] === blankSpace;
+
       // If all the three elements in the column are of same candy color
-      if(columnOfThree.every(square => currentCandyArrangement[square] === decidedColor)) {
+      if(columnOfThree.every(square => currentCandyArrangement[square] === decidedColor && !isBlank)) {
+        setScoreDisplay((score) => score + 3);
         columnOfThree.forEach(square => currentCandyArrangement[square] = blankSpace);
         return true;
       }
@@ -54,8 +60,12 @@ function App() {
       // It will check the column for the color present at ith index whether all three boxes are of same candy or not.
       const decidedColor = currentCandyArrangement[i];
 
+      // check if blank space appears after a march
+      const isBlank = currentCandyArrangement[i] === blankSpace;
+
       // If all the three elements in the column are of same candy color. 
-      if(columnOfFour.every(square => currentCandyArrangement[square] === decidedColor)) {
+      if(columnOfFour.every(square => currentCandyArrangement[square] === decidedColor && !isBlank)) {
+        setScoreDisplay((score) => score + 4);
         columnOfFour.forEach(square => currentCandyArrangement[square] = blankSpace);
         return true;
       }
@@ -72,12 +82,17 @@ function App() {
 
       // It will check the row for the color present at ith index whether all three boxes are of same candy or not.
       const decidedColor = currentCandyArrangement[i];
+
+      // check if blank space appears after a march
+      const isBlank = currentCandyArrangement[i] === blankSpace;
+
       const notValid = [6, 7, 14, 15, 22, 23, 30, 31, 38, 39, 46, 47, 54, 55, 63, 64];
 
       if(notValid.includes(i)) continue;
 
       // If all the three elements in therow are of same candy color.
-      if(rowOfThree.every(square => currentCandyArrangement[square] === decidedColor)) {
+      if(rowOfThree.every(square => currentCandyArrangement[square] === decidedColor && !isBlank)) {
+        setScoreDisplay((score) => score + 3);
         rowOfThree.forEach(square => currentCandyArrangement[square] = blankSpace);
         return true;
       }
@@ -94,12 +109,17 @@ function App() {
 
       // It will check the row for the color present at ith index whether all three boxes are of same candy or not.
       const decidedColor = currentCandyArrangement[i];
+
+      // check if blank space appears after a march
+      const isBlank = currentCandyArrangement[i] === blankSpace;
+
       const notValid = [5, 6, 7, 13, 14, 15, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53, 54, 55, 62, 63, 64];
 
       if(notValid.includes(i)) continue;
 
       // If all the three elements in the row are of same candy color.
-      if(rowOfFour.every(square => currentCandyArrangement[square] === decidedColor)) {
+      if(rowOfFour.every(square => currentCandyArrangement[square] === decidedColor && isBlank)) {
+        setScoreDisplay((score) => score + 4);
         rowOfFour.forEach(square => currentCandyArrangement[square] = blankSpace);
         return true;
       }
@@ -128,6 +148,8 @@ function App() {
     }
 
   } 
+
+  console.log('Score: ', scoreDisplay);
 
   const dragStart = (e) => {
     console.log(e.target);
@@ -240,6 +262,7 @@ function App() {
           />
         ))}
       </div>
+       <ScoreBoard score={scoreDisplay}/>
     </div>
   );
 }
