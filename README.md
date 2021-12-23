@@ -1,3 +1,3 @@
 ## CANDY CRUSH
 
-<img width="1071" alt="Screenshot 2021-12-23 at 5 49 27 PM" src="https://user-images.githubusercontent.com/71596140/147239700-22feb858-4317-43c5-b214-efc9a9e1f5bf.png">
+<img width="1440" alt="Screenshot 2021-12-23 at 5 56 09 PM" src="https://user-images.githubusercontent.com/71596140/147240398-94ad73c7-3b95-4aeb-af8d-454735142d08.png">
