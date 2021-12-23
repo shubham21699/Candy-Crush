@@ -7,6 +7,7 @@ import orangeCandy from './images/orange-candy.png';
 import purpleCandy from './images/purple-candy.png';
 import redCandy from './images/red-candy.png';
 import yellowCandy from './images/yellow-candy.png';
+import brownCandy from './images/brown-candy.png';
 import ScoreBoard from './ScoreBoard';
 
 
@@ -17,7 +18,8 @@ const candy_colors = [
   orangeCandy,
   purpleCandy,
   redCandy,
-  yellowCandy
+  yellowCandy,
+  brownCandy
 ];
 
 function App() {
