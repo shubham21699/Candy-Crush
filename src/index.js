@@ -6,6 +6,10 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
+  {window.addEventListener("DOMContentLoaded", event => {
+   const audio = document.querySelector("audio");
+   audio.volume = 0.2;
+   })}
     <App />
   </React.StrictMode>,
   document.getElementById('root')

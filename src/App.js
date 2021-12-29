@@ -9,6 +9,7 @@ import redCandy from './images/red-candy.png';
 import yellowCandy from './images/yellow-candy.png';
 import brownCandy from './images/brown-candy.png';
 import ScoreBoard from './ScoreBoard';
+// import ReactAudioPlayer from 'react-audio-player';
 
 
 const board_width = 8;
@@ -23,6 +24,12 @@ const candy_colors = [
 ];
 
 function App() {
+
+  // <ReactAudioPlayer
+  //   src='src/Music/CandyCrushSagaSong.mp3'
+  //   autoPlay
+  //   controls
+  // />
 
   const [currentCandyArrangement, setCurrentCandyArrangement] = useState([]);
   const [squareBeingDragged, setSquareBeingDragged] = useState(null)
