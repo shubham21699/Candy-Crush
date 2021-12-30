@@ -9,7 +9,7 @@ import redCandy from './images/red-candy.png';
 import yellowCandy from './images/yellow-candy.png';
 import brownCandy from './images/brown-candy.png';
 import ScoreBoard from './ScoreBoard';
-// import ReactAudioPlayer from 'react-audio-player';
+import { Zoom } from 'react-reveal';
 
 
 const board_width = 8;
@@ -254,24 +254,26 @@ function App() {
 
   return (
     <div className="App">
-      <div className="board">
-        {currentCandyArrangement.map((candyColor, index) => (
-          <img 
-            key={index}
-            src={candyColor}
-            alt={candyColor}
-            data_id={index}
-            draggable={true}
-            onDragStart={dragStart}
-            onDragOver={(e) => e.preventDefault()}
-            onDragEnter={(e) => e.preventDefault()}
-            onDragLeave={(e) => e.preventDefault()}
-            onDrop={dragDrop}
-            onDragEnd={dragEnd}
-          />
-        ))}
-      </div>
-       <ScoreBoard score={scoreDisplay}/>
+      <Zoom top>
+        <div className="board">
+          {currentCandyArrangement.map((candyColor, index) => (
+            <img
+              key={index}
+              src={candyColor}
+              alt={candyColor}
+              data_id={index}
+              draggable={true}
+              onDragStart={dragStart}
+              onDragOver={(e) => e.preventDefault()}
+              onDragEnter={(e) => e.preventDefault()}
+              onDragLeave={(e) => e.preventDefault()}
+              onDrop={dragDrop}
+              onDragEnd={dragEnd}
+            />
+          ))}
+        </div>
+      </Zoom>
+      <ScoreBoard score={scoreDisplay} />
     </div>
   );
 }
